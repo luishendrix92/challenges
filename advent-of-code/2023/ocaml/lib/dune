@@ -1,0 +1,4 @@
+(library
+ (name advent)
+ (synopsis "Utility functions for the solution of AoC challenges.")
+ (libraries str core base))

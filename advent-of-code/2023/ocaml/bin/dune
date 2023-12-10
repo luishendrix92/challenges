@@ -1,0 +1,8 @@
+(executables
+ (public_names day05 day06)
+ (names day05 day06)
+ (libraries advent core base str)
+ (flags
+   (:standard -w -32-33 -w -69))
+ (preprocess
+  (pps ppx_deriving.show ppx_deriving.ord ppx_deriving.eq ppx_sexp_conv)))

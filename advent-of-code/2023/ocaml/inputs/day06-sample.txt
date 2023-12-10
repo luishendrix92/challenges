@@ -1,0 +1,50 @@
+Time:      7  15   30
+Distance:  9  40  200
+
+h -> hold time in ms (function)
+v -> 1 to 1 mapping of h in mm/ms (implicit)
+d -> distance traveled in mm (computed)
+t -> remaining time in ms (computed)
+T -> available time for race in ms (input)
+D -> record distance in mm (input)
++-----------+-------------+
+| For T = 7 | D = 9       |
++-----------+-------------+
+h = 0, t = 7, v = 0, d =  0
+h = 1, t = 6, v = 1, d =  6
+h = 2, t = 5, v = 2, d = 10 <-
+h = 3, t = 4, v = 3, d = 12 <- Four
+h = 4, t = 3, v = 4, d = 12 <- Ways
+h = 5, t = 2, v = 5, d = 10 <-
+h = 6, t = 1, v = 6, d =  6
+h = 7, t = 0, v = 7, d =  0
+
+   d                               
+   ▲             _                 
+12 ┤           ●   ●               
+11 ┤         .       .             
+10 ┤       ●           ●           
+ 9 ┤------+-------------+----------
+ 8 ┤     .|             |.         
+ 7 ┤    . |             | .        
+ 6 ┤   ●  |             |  ●       
+ 5 ┤  .   |             |   .      
+ 4 ┤ .    |             |    .     
+ 3 ┤.     |             |     .    
+ 2 ┤      |             |      .   
+ 1 ┤      |             |      |   
+───●───┬──+┬───┬───┬───┬+──┬───●─▸h
+ 0 │   1   2   3   4   5   6   7   
+
+(x1, x2) = Intersection roots of
+- f(h) = h * (T - h) or
+  f(h) = Th - h^2 + Th - h^2 or
+  f(h) = -2h^2 + 2Th or simplified
+  f(h) = -h^2 + Th => -h^2 + 7h
+- y = 9 or f(h) = 9
+
+Notice that since the segment is horizontal,
+we can just add a -D (in this case, -9) to
+the equation, then solve the quadratic eq.
+
+Ways = abs(floor(x_2) - ceil(x_1)) + 1

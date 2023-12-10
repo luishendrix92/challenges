@@ -1,0 +1,24 @@
+(lang dune 3.12)
+
+(name aoc2023)
+
+(generate_opam_files true)
+
+(source
+ (github luishendrix92/coding-challenges))
+
+(authors "Luis Lopez")
+
+(maintainers "Luis Lopez")
+
+(license MIT)
+
+(documentation https://adventofcode.com/2023/)
+
+(package
+ (name aoc2023)
+ (synopsis "OCaml Solutions for AoC 2023")
+ (description "Solving daily Advent of Code (2023) challenges with OCaml.")
+ (depends ocaml dune)
+ (tags
+  (topics "advent of code" aoc challenges algorithms)))
