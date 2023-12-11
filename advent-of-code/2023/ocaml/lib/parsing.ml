@@ -1,5 +1,4 @@
 let ( @@ ) = Core.Fn.compose
-let read_lines = Core.In_channel.read_lines
 
 let split_on ?(trim = true) sep s =
   (if trim then String.trim s else s) |> Str.split (Str.regexp sep)

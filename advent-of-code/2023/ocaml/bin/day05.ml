@@ -1,6 +1,7 @@
 open Advent.Parsing
+open Advent.Helpers
 
-let almanac = read_lines "./inputs/day05-full.txt" |> group_blocks
+let almanac = Advent.Helpers.read_input __FILE__ |> group_blocks
 
 type conversion_map =
   { name : string
@@ -139,6 +140,6 @@ let part_2 () =
 ;;
 
 let () =
-  part_1 ();
+  (* part_1 (); *)
   part_2 ()
 ;;
