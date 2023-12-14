@@ -8,7 +8,7 @@
 (** [group_list_by] returns a [StdLib.Hashtbl] where the keys are defined
     by the result of applying [f] to each value of a list [l], and their
     corresponding value will be a list of all the elements of [l] that
-    returned said key. Used by functions such as [group_identical].
+    returned said key. Used by functions such as [sorted_frequencies].
 
     If the optional argument [initial_size] is not provided, the length of
     [l] will be used as the initial [Hashtbl] size instead. *)
@@ -29,9 +29,12 @@ let group_list_by ?initial_size f l =
     l
 ;;
 
-(** [group_identical] creates a list of lifts where each sub-list contains
-    identical elements (both singular and repeated). This is the unorted
-    equivalent of Jane Street's [Core.List.sort_and_group]. *)
-let group_identical l =
-  group_list_by Fun.id l |> Hashtbl.to_seq_values |> List.of_seq
+(** [sorted_frequencies] takes a list of elements and returns a list
+    of frequences sorted in descending order. *)
+let sorted_frequencies l =
+  group_list_by Fun.id l
+  |> Hashtbl.to_seq
+  |> Seq.map (fun (_, elts) -> List.length elts)
+  |> List.of_seq
+  |> List.sort Core.Int.descending
 ;;

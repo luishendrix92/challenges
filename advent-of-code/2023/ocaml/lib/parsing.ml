@@ -20,3 +20,4 @@ let floats_of_string s = split_on " +" s |> List.map float_of_string
 let ints_of_string s = split_on " +" s |> List.map int_of_string
 let data_col = List.hd @@ List.tl @@ split_on ":"
 let float_of_nums = float_of_string @@ Str.global_replace (Str.regexp " +") ""
+let digit_val ch = Char.code ch - 48
