@@ -1,5 +1,37 @@
-let group_list_by ?initial_size l =
-  match initial_size with
-  | Some size -> (string_of_int size) :: l
-  | None -> [""]
+(** Extended API to work with different container types.
+
+    Jane Street's Core library, Stdlib and CC (an external library) are very
+    complete when it comes to extending the API for container types such as
+    lists, tuples, arrays, maps, sets, etc. But if I need specific operations
+    that I haven't found in other libraries, then I'll put them here. *)
+
+(** [group_list_by] returns a [StdLib.Hashtbl] where the keys are defined
+    by the result of applying [f] to each value of a list [l], and their
+    corresponding value will be a list of all the elements of [l] that
+    returned said key. Used by functions such as [group_identical].
+
+    If the optional argument [initial_size] is not provided, the length of
+    [l] will be used as the initial [Hashtbl] size instead. *)
+let group_list_by ?initial_size f l =
+  let size =
+    match initial_size with
+    | Some size -> size
+    | None -> List.length l
+  in
+  List.fold_left
+    (fun groups elt ->
+      let group_key = f elt in
+      (match Hashtbl.find_opt groups group_key with
+       | Some group -> Hashtbl.replace groups group_key (elt :: group)
+       | None -> Hashtbl.replace groups group_key [ elt ]);
+      groups)
+    (Hashtbl.create size)
+    l
+;;
+
+(** [group_identical] creates a list of lifts where each sub-list contains
+    identical elements (both singular and repeated). This is the unorted
+    equivalent of Jane Street's [Core.List.sort_and_group]. *)
+let group_identical l =
+  group_list_by Fun.id l |> Hashtbl.to_seq_values |> List.of_seq
 ;;
