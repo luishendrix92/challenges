@@ -5,6 +5,8 @@ open Core.Comparable
 
 (* TODO: Rewrite in order to prevent too much ~joker argument passing. *)
 module Hand = struct
+  open Core.Int
+
   let card_strength ~joker = function
     | 'T' -> 10
     | 'J' -> if not joker then 11 else 1
@@ -33,15 +35,15 @@ module Hand = struct
   ;;
 
   let compare_hands ~joker =
-    let open Core.Int in
     let by_type_strength =
-      Core.Tuple2.compare ~cmp1:descending ~cmp2:ascending
+      lift
+        (Core.Tuple2.compare ~cmp1:descending ~cmp2:ascending)
+        ~f:(memo (pair_counts ~joker))
     in
     let by_card_strength =
       List.compare (lift ascending ~f:(card_strength ~joker))
     in
-    lexicographic
-      [ lift by_type_strength ~f:(pair_counts ~joker); by_card_strength ]
+    lexicographic [ by_type_strength; by_card_strength ]
   ;;
 end
 

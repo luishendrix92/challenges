@@ -24,3 +24,29 @@ let read_input ?(sample = false) callee_filename =
     fractional result to 0. If this is not the intended behaviour, please
     ocnsider using Jane Street's [Core.Int.( ** )] instead. *)
 let int_exp x n = int_of_float (float_of_int x ** float_of_int n)
+
+(** [memo] turns an expensive function into a memoized version.
+    Only works with {b unary functions} (single argument). If the argument
+    already exists in cache, it will return the saved value and if it's
+    not, then it will compute it and save it for the first time. *)
+let memo f =
+  let h = Hashtbl.create 11 in
+  fun x ->
+    try Hashtbl.find h x with
+    | Not_found ->
+      let y = f x in
+      Hashtbl.add h x y;
+      y
+;;
+
+let memo_rec f =
+  let h = Hashtbl.create 16 in
+  let rec g x =
+    try Hashtbl.find h x with
+    | Not_found ->
+      let y = f g x in
+      Hashtbl.add h x y;
+      y
+  in
+  g
+;;
