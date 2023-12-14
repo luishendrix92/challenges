@@ -70,14 +70,18 @@ J cards can pretend to be whatever card is best for the purpose of determining h
 
 Now, the above example goes very differently:
 
+```
 32T3K 765
 T55J5 684
 KK677 28
 KTJJT 220
 QQQJA 483
-32T3K is still the only one pair; it doesn't contain any jokers, so its strength doesn't increase.
-KK677 is now the only two pair, making it the second-weakest hand.
-T55J5, KTJJT, and QQQJA are now all four of a kind! T55J5 gets rank 3, QQQJA gets rank 4, and KTJJT gets rank 5.
-With the new joker rule, the total winnings in this example are 5905.
+```
 
-Using the new joker rule, find the rank of every hand in your set. What are the new total winnings?
+- 32T3K is still the only one pair; it doesn't contain any jokers, so its strength doesn't increase.
+- KK677 is now the only two pair, making it the second-weakest hand.
+- T55J5, KTJJT, and QQQJA are now all four of a kind! T55J5 gets rank 3, QQQJA gets rank 4, and KTJJT gets rank 5.
+
+With the new joker rule, the total winnings in this example are **`5905`**.
+
+Using the new joker rule, find the rank of every hand in your set. **What are the new total winnings?**

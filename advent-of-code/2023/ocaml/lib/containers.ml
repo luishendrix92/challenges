@@ -7,8 +7,7 @@
 
 (** [group_list_by] returns a [StdLib.Hashtbl] where the keys are defined
     by the result of applying [f] to each value of a list [l], and their
-    corresponding value will be a list of all the elements of [l] that
-    returned said key. Used by functions such as [sorted_frequencies].
+    corresponding value will be a list of all the elements of [l].
 
     If the optional argument [initial_size] is not provided, the length of
     [l] will be used as the initial [Hashtbl] size instead. *)
@@ -29,12 +28,19 @@ let group_list_by ?initial_size f l =
     l
 ;;
 
-(** [sorted_frequencies] takes a list of elements and returns a list
-    of frequences sorted in descending order. *)
-let sorted_frequencies l =
-  group_list_by Fun.id l
-  |> Hashtbl.to_seq
-  |> Seq.map (fun (_, elts) -> List.length elts)
-  |> List.of_seq
-  |> List.sort Core.Int.descending
+module CharMap = Map.Make (Char)
+
+(** [char_freq] takes a list of characters and returns an associative
+    list of frequences sorted in descending order (by most frequent). *)
+let char_freq l =
+  let inc_count = function
+    | Some count -> Some (count + 1)
+    | None -> Some 1
+  in
+  List.fold_left
+    (fun freqs ch -> CharMap.update ch inc_count freqs)
+    CharMap.empty
+    l
+  |> CharMap.to_list
+  |> List.sort (Core.Comparable.lift Core.Int.descending ~f:snd)
 ;;
