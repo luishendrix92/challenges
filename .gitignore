@@ -2,3 +2,5 @@
 **/.lsp
 **/_build
 .vscode
+.idea
+*.iml

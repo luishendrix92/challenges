@@ -1,30 +1,17 @@
-open Str
-
-let int_exp x n = int_of_float (float_of_int x ** float_of_int n)
-
+open Advent.Parsing
+open Advent.Helpers
 module IntSet = Set.Make (Int)
 
 (** A card is represented by two sets of numbers: first,
     the winning numbers, and second, my numbers. *)
 let parse_card card_line =
-  let parse_set str_nums =
-    str_nums
-    |> String.trim
-    |> split (regexp " +")
-    |> List.map int_of_string
-    |> IntSet.of_list
-  in
+  let parse_set str_nums = ints_of_string str_nums |> IntSet.of_list in
   let sets =
-    card_line
-    |> String.split_on_char ':'
-    |> List.tl
-    |> List.hd
-    |> String.split_on_char '|'
-    |> List.map parse_set
+    data_col card_line |> String.split_on_char '|' |> List.map parse_set
   in
   match sets with
   | winning :: own :: _ -> winning, own
-  | _ -> IntSet.empty, IntSet.empty
+  | _ -> raise (Failure "Parse failed, not enough sets (2).")
 ;;
 
 (** Computes a card's points by intersecting both number sets and using its
@@ -36,7 +23,7 @@ let card_points (winning, own) =
 ;;
 
 let scored_cards =
-  Core.In_channel.read_lines "day04.txt"
+  read_input __FILE__
   |> List.map (fun line -> card_points (parse_card line))
   |> Array.of_list
 ;;
@@ -79,5 +66,7 @@ let part_2 () =
   |> Printf.printf "Part 2 Solution: %d\n"
 ;;
 
-part_1 ();
-part_2 ()
+let () =
+  part_1 ();
+  part_2 ()
+;;

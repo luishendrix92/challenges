@@ -1,6 +1,6 @@
 (executables
- (public_names day05 day06)
- (names day05 day06)
+ (public_names day04 day05 day06)
+ (names day04 day05 day06)
  (libraries advent core str)
  (flags
    (:standard -w -32-33 -w -69))
