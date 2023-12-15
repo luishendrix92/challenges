@@ -44,3 +44,18 @@ let char_freq l =
   |> CharMap.to_list
   |> List.sort (Core.Comparable.lift Core.Int.descending ~f:snd)
 ;;
+
+(** [list_to_pairs] takes a list and returns a list of pairs which elements
+    are the current [x_i] element and the next [x_(i+1)] thus having a final
+    length of [n-1]. Analogous to (safely) zipping [l] with its own tail.
+
+    {[
+      let result = list_to_pairs [1;2;3;4] in
+      assert (result = (1, 2); (2, 3); (3, 4)])
+    ]}
+
+    This implementation is non tail-recursive.*)
+let rec list_to_pairs = function
+  | x :: y :: rest -> (x, y) :: list_to_pairs (y :: rest)
+  | _ -> []
+;;
