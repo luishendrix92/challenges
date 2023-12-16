@@ -16,6 +16,18 @@ let group_blocks lines =
   |> List.filter (( <> ) [])
 ;;
 
+let lines_to_matrix lines =
+  let cols = List.hd lines |> String.length in
+  List.map
+    (fun line ->
+      let len = String.length line in
+      if len <> cols
+      then raise (Failure "Char matrix can't have variable-length rows.")
+      else Array.of_seq (String.to_seq line))
+    lines
+  |> Array.of_list
+;;
+
 let floats_of_string s = split_on " +" s |> List.map float_of_string
 let ints_of_string s = split_on " +" s |> List.map int_of_string
 let data_col = List.hd @@ List.tl @@ split_on ":"

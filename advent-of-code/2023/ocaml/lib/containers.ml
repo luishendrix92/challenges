@@ -59,3 +59,25 @@ let rec list_to_pairs = function
   | x :: y :: rest -> (x, y) :: list_to_pairs (y :: rest)
   | _ -> []
 ;;
+
+let dirs = List.to_seq [ -1, 0; 0, 1; 1, 0; 0, -1 ]
+
+let get2D ~row ~col matrix =
+  try Some matrix.(row).(col) with
+  | Invalid_argument _ -> None
+;;
+
+let adjacent_cells ~y ~x matrix =
+  Seq.map
+    (fun (deltaY, deltaX) ->
+      let row = y + deltaY in
+      let col = x + deltaX in
+      get2D matrix ~row ~col)
+    dirs
+;;
+
+let index_of_2D ~f matrix =
+  Array.find_mapi
+    (fun y row -> Array.find_index f row |> Option.map (fun x -> y, x))
+    matrix
+;;
