@@ -76,7 +76,7 @@ let adjacent_cells ~y ~x matrix =
     dirs
 ;;
 
-let index_of_2D ~f matrix =
+let pos_in_matrix ~f matrix =
   Array.find_mapi
     (fun y row -> Array.find_index f row |> Option.map (fun x -> y, x))
     matrix

@@ -1,7 +1,7 @@
 (executables
  (public_names day04 day05 day06 day07 day09 day10)
  (names day04 day05 day06 day07 day09 day10)
- (libraries advent core str fmt)
+ (libraries advent core str fmt unix)
  (flags
    (:standard -w -32-33 -w -69))
  (preprocess
