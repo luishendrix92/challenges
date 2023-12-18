@@ -19,6 +19,12 @@ let read_input ?(sample = false) callee_filename =
   Core.In_channel.read_lines input_filename
 ;;
 
+let write_ch_matrix ~fname matrix =
+  Array.map Core.String.of_array matrix
+  |> Array.to_list
+  |> Core.Out_channel.write_lines fname
+;;
+
 (** [int_exp] is the integer equivalent of [( ** )] float exponentiation but
     this version doesn't break when the exponent is negative, it floors the
     fractional result to 0. If this is not the intended behaviour, please

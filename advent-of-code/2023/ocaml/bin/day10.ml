@@ -28,16 +28,22 @@ let move_rat rat =
   rat.steps <- rat.steps + 1
 ;;
 
+(* NOTE: Lines {33,38,41} help solve part 2 by tracing the main loop. *)
 let steps_to_farthest ~rat_pos:(y, x) pipe_map =
+  let traced_loop = Array.make_matrix 140 140 '.' in
   let rec traverse_loop rat =
     move_rat rat;
     match get2D pipe_map ~row:rat.y ~col:rat.x with
-    | Some 'S' -> rat.steps
+    | Some 'S' ->
+      write_ch_matrix traced_loop ~fname:"./outputs/day10.txt";
+      rat.steps
     | Some pipe ->
+      traced_loop.(rat.y).(rat.x) <- pipe;
       let next_dir = direction_change ~current_dir:rat.direction pipe in
       traverse_loop { rat with direction = next_dir }
     | None -> raise (Failure "Position out of map.")
   in
+  (* HACK: The challenge requirements facilitate the initial dir hardcoding. *)
   traverse_loop { y; x; steps = 0; direction = 0, 1 }
 ;;
 

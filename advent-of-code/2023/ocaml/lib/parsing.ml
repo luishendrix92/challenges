@@ -20,10 +20,9 @@ let lines_to_matrix lines =
   let cols = List.hd lines |> String.length in
   List.map
     (fun line ->
-      let len = String.length line in
-      if len <> cols
+      if String.length line <> cols
       then raise (Failure "Char matrix can't have variable-length rows.")
-      else Array.of_seq (String.to_seq line))
+      else Core.String.to_array line)
     lines
   |> Array.of_list
 ;;
