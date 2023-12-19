@@ -29,6 +29,7 @@ let group_list_by ?initial_size f l =
 ;;
 
 module CharMap = Map.Make (Char)
+module CharSet = Set.Make (Char)
 
 (** [char_freq] takes a list of characters and returns an associative
     list of frequences sorted in descending order (by most frequent). *)

@@ -28,14 +28,15 @@ let move_rat rat =
   rat.steps <- rat.steps + 1
 ;;
 
-(* NOTE: Lines {33,38,41} help solve part 2 by tracing the main loop. *)
+let traced_loop = Array.make_matrix 140 140 '.'
+
+(* NOTE: Lines {31,39,42} help solve part 2 by tracing the main loop. *)
 let steps_to_farthest ~rat_pos:(y, x) pipe_map =
-  let traced_loop = Array.make_matrix 140 140 '.' in
   let rec traverse_loop rat =
     move_rat rat;
     match get2D pipe_map ~row:rat.y ~col:rat.x with
     | Some 'S' ->
-      write_ch_matrix traced_loop ~fname:"./outputs/day10.txt";
+      traced_loop.(rat.y).(rat.x) <- 'F';
       rat.steps
     | Some pipe ->
       traced_loop.(rat.y).(rat.x) <- pipe;
@@ -43,7 +44,7 @@ let steps_to_farthest ~rat_pos:(y, x) pipe_map =
       traverse_loop { rat with direction = next_dir }
     | None -> raise (Failure "Position out of map.")
   in
-  (* HACK: The challenge requirements facilitate the initial dir hardcoding. *)
+  (* HACK: The challenge requirements facilitate initial dir hardcoding. *)
   traverse_loop { y; x; steps = 0; direction = 0, 1 }
 ;;
 
@@ -55,4 +56,32 @@ let part_1 () =
   | None -> raise (Failure "No rat (S) found inside the input file.")
 ;;
 
-let () = part_1 ()
+let ray_casting ~charset line ch_idx =
+  let count : int ref = ref 0 in
+  for i = 0 to ch_idx - 1 do
+    if CharSet.mem line.(i) charset then Core.Int.incr count
+  done;
+  is_odd !count
+;;
+
+let part_2 () =
+  let is_contained = ray_casting ~charset:(CharSet.of_list [ 'L'; 'J'; '|' ]) in
+  let contained_count =
+    Core.Array.fold
+      ~f:(fun sum line ->
+        sum
+        + Core.Array.foldi
+            ~f:(fun i sum ch ->
+              sum + if ch = '.' then is_contained line i |> Bool.to_int else 0)
+            ~init:0
+            line)
+      ~init:0
+      traced_loop
+  in
+  Printf.printf "Part 2 Solution: %d\n" contained_count
+;;
+
+let () =
+  part_1 ();
+  part_2 ()
+;;
