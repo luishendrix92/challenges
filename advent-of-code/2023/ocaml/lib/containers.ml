@@ -82,3 +82,22 @@ let pos_in_matrix ~f matrix =
     (fun y row -> Array.find_index f row |> Option.map (fun x -> y, x))
     matrix
 ;;
+
+let transpose_matrix matrix =
+  let rows, cols = Array.length matrix, Array.length matrix.(0) in
+  let transposed = Array.make_matrix cols rows matrix.(0).(0) in
+  for y = 0 to cols - 1 do
+    for x = 0 to rows - 1 do
+      transposed.(y).(x) <- matrix.(x).(y)
+    done
+  done;
+  transposed
+;;
+
+let unique_pairs l =
+  let rec aux acc = function
+    | [] -> acc
+    | x :: xs -> aux (List.map (fun y -> x, y) xs @ acc) xs
+  in
+  aux [] l
+;;
